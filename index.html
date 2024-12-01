@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Model Context Protocol Ontology Specification</title>
+    <meta name="description"
+        content="Formal vocabulary for describing interactions between AI language models and external context providers. Defines core concepts for resources, tools, prompts and messaging.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Model Context Protocol Ontology">
+    <meta property="og:description" content="RDF vocabulary for AI language model context interactions">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Model Context Protocol Ontology">
+    <meta name="twitter:description" content="RDF vocabulary for AI language model context interactions">
+
+    <style>
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font: 16px/1.6 system-ui, sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            color: #1a73e8;
+        }
+
+        h2 {
+            color: #185abc;
+        }
+
+        dt {
+            font-weight: bold;
+        }
+
+        dd {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Model Context Protocol Ontology</h1>
+
+    <section id="preface">
+        <p><strong>tl;dr</strong> : <a href="http://modelcontextprotocol.io/">Model Context Protocol</a> expressed in <a
+                href="https://en.wikipedia.org/wiki/Resource_Description_Framework">RDF</a> because graphs.</p>
+        <p>This is a first pass, most of the heavy lifting done by <a href="https://claude.ai">Claude</a>, so while it
+            looks plausible, but it might not be. I've not had a play yet.</p>
+        <p>There would be more but <strong>Message limit reached for Claude 3.5 Sonnet until 9 PM.</strong></p>
+        <p>Get your <a href="https://en.wikipedia.org/wiki/Linked_data">Linked Data</a> on!</p>
+    </section>
+    <nav id="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#abstract">Abstract</a></li>
+            <li><a href="#namespace">Namespace</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#classes">Classes</a></li>
+            <li><a href="#properties">Properties</a></li>
+            <li><a href="#rag-integration">RAG Integration Patterns</a></li>
+            <li><a href="#references">References</a></li>
+        </ul>
+    </nav>
+
+    <section id="abstract">
+        <h2>Abstract</h2>
+        <p>The Model Context Protocol (MCP) Ontology provides a formal vocabulary for describing interactions between AI
+            language models and external context providers. It defines core concepts for resources, tools, prompts and
+            messaging that enable structured communication between AI systems and domain-specific data sources. </p>
+    </section>
+
+    <section id="files">
+        <h2>Files</h2>
+        <ul>
+            <li><a href="mcp.ttl">Core Ontology</a></li>
+            <li><a href="mcp-ontology.ttl">Extended Ontology</a></li>
+            <li><a href="mcp-shapes.shacl">SHACL Shapes</a></li>
+            <li><a href="sparql-examples.md">Example SPARQL SELECT queries (with a bit of Python)</a></li>
+            <li><a href="sparql-example.js">Example JS with a SPARQL UPDATE</a></li>
+        </ul>
+
+
+        <section id="namespace">
+            <h2>Namespace</h2>
+            <p><code>http://purl.org/stuff/mcp/</code></p>
+            <p>Preferred prefix: mcp</p>
+        </section>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>This ontology models the key components of the Model Context Protocol ecosystem:</p>
+            <dl>
+                <dt>Servers</dt>
+                <dd>Implementations that provide resources, tools and prompts to clients</dd>
+
+                <dt>Clients</dt>
+                <dd>Applications that connect to servers and facilitate interaction with language models</dd>
+
+                <dt>Resources</dt>
+                <dd>Contextual information made available to language models</dd>
+
+                <dt>Tools</dt>
+                <dd>Executable functions that allow models to perform actions</dd>
+
+                <dt>Prompts</dt>
+                <dd>Templates that structure interactions with language models</dd>
+            </dl>
+        </section>
+
+        <section id="classes">
+            <h2>Classes</h2>
+            <dl>
+                <dt>mcp:Server</dt>
+                <dd>An MCP server implementation</dd>
+
+                <dt>mcp:Client</dt>
+                <dd>An MCP client implementation</dd>
+
+                <dt>mcp:Resource</dt>
+                <dd>A resource accessible via MCP</dd>
+
+                <dt>mcp:Tool</dt>
+                <dd>A tool callable via MCP</dd>
+
+                <dt>mcp:Prompt</dt>
+                <dd>A prompt template</dd>
+
+                <dt>mcp:Message</dt>
+                <dd>A message in an MCP conversation</dd>
+
+                <dt>mcp:Content</dt>
+                <dd>Content of an MCP message</dd>
+
+                <dt>mcp:TextContent</dt>
+                <dd>Text content in a message</dd>
+
+                <dt>mcp:ImageContent</dt>
+                <dd>Image content in a message</dd>
+
+                <dt>mcp:Role</dt>
+                <dd>Role of a participant in communication</dd>
+
+                <dt>mcp:Capability</dt>
+                <dd>A supported capability</dd>
+            </dl>
+        </section>
+
+        <section id="properties">
+            <h2>Properties</h2>
+            <dl>
+                <dt>mcp:hasCapability</dt>
+                <dd>Links implementations to their capabilities</dd>
+
+                <dt>mcp:providesResource</dt>
+                <dd>Links servers to their resources</dd>
+
+                <dt>mcp:providesTool</dt>
+                <dd>Links servers to their tools</dd>
+
+                <dt>mcp:providesPrompt</dt>
+                <dd>Links servers to their prompts</dd>
+
+                <dt>mcp:hasContent</dt>
+                <dd>Links messages to their content</dd>
+
+                <dt>mcp:hasRole</dt>
+                <dd>Links messages to sender roles</dd>
+            </dl>
+        </section>
+
+        <section id="rag-integration">
+            <h2>RAG Integration Patterns</h2>
+            <p>The MCP ontology supports Retrieval-Augmented Generation (RAG) through structured access to context
+                resources. Here are key integration patterns:</p>
+
+            <div class="example">
+                <h3>Resource Discovery</h3>
+                <pre>
+PREFIX mcp: &lt;http://purl.org/stuff/mcp/&gt;
+
+SELECT ?resource ?name ?type WHERE {
+  ?server a mcp:Server ;
+          mcp:providesResource ?resource .
+  ?resource mcp:name ?name ;
+           mcp:mimeType ?type .
+}</pre>
+            </div>
+
+            <div class="example">
+                <h3>Tool Discovery</h3>
+                <pre>
+PREFIX mcp: &lt;http://purl.org/stuff/mcp/&gt;
+
+SELECT ?tool ?desc WHERE {
+  ?server mcp:providesTool ?tool .
+  ?tool mcp:description ?desc .
+  FILTER(CONTAINS(LCASE(?desc), "text analysis"))
+}</pre>
+            </div>
+
+            <div class="example">
+                <h3>Hybrid Search Implementation</h3>
+                <p>Combining vector similarity with graph traversal:</p>
+                <pre>
+from rdflib import Graph, Namespace
+from sentence_transformers import SentenceTransformer
+
+MCP = Namespace("http://purl.org/stuff/mcp/")
+g = Graph()
+g.parse("mcp-store.ttl")
+encoder = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Index resources
+resources = []
+for s,p,o in g.triples((None, MCP.text, None)):
+    resources.append({
+        'id': str(s),
+        'text': str(o),
+        'embedding': encoder.encode(str(o))
+    })
+
+# Query with RAG
+def query_with_context(question):
+    q_embedding = encoder.encode(question)
+    relevant = find_similar(q_embedding, resources)
+
+    context = []
+    for r in relevant:
+        # Get metadata
+        meta = g.query("""
+            SELECT ?name ?type WHERE {
+                ?res mcp:name ?name ;
+                     mcp:mimeType ?type .
+                FILTER(?res = <%s>)
+            }""" % r['id'])
+        context.append({
+            'text': r['text'],
+            'metadata': list(meta)[0]
+        })
+
+    return build_prompt(question, context)</pre>
+            </div>
+
+            <div class="example">
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Use SPARQL property paths to traverse related resources</li>
+                    <li>Maintain vector indices for text content</li>
+                    <li>Cache frequent query patterns</li>
+                    <li>Implement real-time updates through change notifications</li>
+                    <li>Track resource versions in the graph</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>Status: Testing<br>
+                Version: 1.0.0<br>
+                Date: 2024-12-01<br>
+                License: <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+            <p><a href="https://danny.ayers.name">Danny Ayers</a> & <a href="https://claude.ai">Claude</a></p>
+        </footer>
+
+</body>
+
+</html>

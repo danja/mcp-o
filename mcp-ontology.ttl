@@ -1,0 +1,151 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix mcp: <http://purl.org/stuff/mcp/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+
+# Ontology Definition
+mcp: a owl:Ontology ;
+    dcterms:title "Model Context Protocol Ontology"@en ;
+    dcterms:description "Ontology for describing Model Context Protocol concepts and relationships"@en ;
+    dcterms:created "2024-03-01"^^xsd:date ;
+    vann:preferredNamespacePrefix "mcp" ;
+    vann:preferredNamespaceUri "http://purl.org/stuff/mcp/" ;
+    owl:versionInfo "1.0.0" .
+
+# Core Classes
+mcp:Server a owl:Class ;
+    rdfs:label "Server"@en ;
+    rdfs:comment "An MCP server implementation"@en .
+
+mcp:Client a owl:Class ;
+    rdfs:label "Client"@en ;
+    rdfs:comment "An MCP client implementation"@en .
+
+mcp:Resource a owl:Class ;
+    rdfs:label "Resource"@en ;
+    rdfs:comment "A resource accessible via MCP"@en .
+
+mcp:Tool a owl:Class ;
+    rdfs:label "Tool"@en ;
+    rdfs:comment "A tool callable via MCP"@en .
+
+mcp:Prompt a owl:Class ;
+    rdfs:label "Prompt"@en ;
+    rdfs:comment "A prompt template provided by an MCP server"@en .
+
+mcp:Message a owl:Class ;
+    rdfs:label "Message"@en ;
+    rdfs:comment "A message in an MCP conversation"@en .
+
+mcp:Content a owl:Class ;
+    rdfs:label "Content"@en ;
+    rdfs:comment "Content of an MCP message"@en .
+
+mcp:TextContent a owl:Class ;
+    rdfs:subClassOf mcp:Content ;
+    rdfs:label "Text Content"@en ;
+    rdfs:comment "Text content in an MCP message"@en .
+
+mcp:ImageContent a owl:Class ;
+    rdfs:subClassOf mcp:Content ;
+    rdfs:label "Image Content"@en ;
+    rdfs:comment "Image content in an MCP message"@en .
+
+mcp:Role a owl:Class ;
+    rdfs:label "Role"@en ;
+    rdfs:comment "Role of a participant in MCP communication"@en .
+
+mcp:Capability a owl:Class ;
+    rdfs:label "Capability"@en ;
+    rdfs:comment "A capability supported by an MCP implementation"@en .
+
+# Properties
+mcp:hasCapability a owl:ObjectProperty ;
+    rdfs:domain [
+        owl:unionOf (mcp:Server mcp:Client)
+    ] ;
+    rdfs:range mcp:Capability ;
+    rdfs:label "has capability"@en .
+
+mcp:providesResource a owl:ObjectProperty ;
+    rdfs:domain mcp:Server ;
+    rdfs:range mcp:Resource ;
+    rdfs:label "provides resource"@en .
+
+mcp:providesTool a owl:ObjectProperty ;
+    rdfs:domain mcp:Server ;
+    rdfs:range mcp:Tool ;
+    rdfs:label "provides tool"@en .
+
+mcp:providesPrompt a owl:ObjectProperty ;
+    rdfs:domain mcp:Server ;
+    rdfs:range mcp:Prompt ;
+    rdfs:label "provides prompt"@en .
+
+mcp:hasContent a owl:ObjectProperty ;
+    rdfs:domain mcp:Message ;
+    rdfs:range mcp:Content ;
+    rdfs:label "has content"@en .
+
+mcp:hasRole a owl:ObjectProperty ;
+    rdfs:domain mcp:Message ;
+    rdfs:range mcp:Role ;
+    rdfs:label "has role"@en .
+
+mcp:text a owl:DatatypeProperty ;
+    rdfs:domain mcp:TextContent ;
+    rdfs:range xsd:string ;
+    rdfs:label "text"@en .
+
+mcp:imageData a owl:DatatypeProperty ;
+    rdfs:domain mcp:ImageContent ;
+    rdfs:range xsd:base64Binary ;
+    rdfs:label "image data"@en .
+
+mcp:mimeType a owl:DatatypeProperty ;
+    rdfs:domain [
+        owl:unionOf (mcp:Resource mcp:ImageContent)
+    ] ;
+    rdfs:range xsd:string ;
+    rdfs:label "MIME type"@en .
+
+mcp:uri a owl:DatatypeProperty ;
+    rdfs:domain mcp:Resource ;
+    rdfs:range xsd:anyURI ;
+    rdfs:label "URI"@en .
+
+mcp:name a owl:DatatypeProperty ;
+    rdfs:domain [
+        owl:unionOf (mcp:Resource mcp:Tool mcp:Prompt)
+    ] ;
+    rdfs:range xsd:string ;
+    rdfs:label "name"@en .
+
+mcp:description a owl:DatatypeProperty ;
+    rdfs:domain [
+        owl:unionOf (mcp:Resource mcp:Tool mcp:Prompt)
+    ] ;
+    rdfs:range xsd:string ;
+    rdfs:label "description"@en .
+
+# Instances
+mcp:UserRole a mcp:Role ;
+    rdfs:label "User"@en .
+
+mcp:AssistantRole a mcp:Role ;
+    rdfs:label "Assistant"@en .
+
+mcp:ResourcesCapability a mcp:Capability ;
+    rdfs:label "Resources Capability"@en .
+
+mcp:ToolsCapability a mcp:Capability ;
+    rdfs:label "Tools Capability"@en .
+
+mcp:PromptsCapability a mcp:Capability ;
+    rdfs:label "Prompts Capability"@en .
+
+mcp:SamplingCapability a mcp:Capability ;
+    rdfs:label "Sampling Capability"@en .

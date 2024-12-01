@@ -1,0 +1,140 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix mcp: <http://purl.org/stuff/mcp/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mcp:ServerShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:Server ;
+    sh:property [
+        sh:path mcp:hasCapability ;
+        sh:minCount 1 ;
+        sh:class mcp:Capability ;
+    ] ;
+    sh:property [
+        sh:path mcp:providesResource ;
+        sh:class mcp:Resource ;
+    ] ;
+    sh:property [
+        sh:path mcp:providesTool ;
+        sh:class mcp:Tool ;
+    ] ;
+    sh:property [
+        sh:path mcp:providesPrompt ;
+        sh:class mcp:Prompt ;
+    ] .
+
+mcp:ClientShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:Client ;
+    sh:property [
+        sh:path mcp:hasCapability ;
+        sh:minCount 1 ;
+        sh:class mcp:Capability ;
+    ] .
+
+mcp:ResourceShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:Resource ;
+    sh:property [
+        sh:path mcp:uri ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:pattern "^[a-z]+://.+"
+    ] ;
+    sh:property [
+        sh:path mcp:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1 ;
+    ] ;
+    sh:property [
+        sh:path mcp:mimeType ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[a-z]+/[-+.a-z0-9]+$"
+    ] .
+
+mcp:ToolShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:Tool ;
+    sh:property [
+        sh:path mcp:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1 ;
+    ] ;
+    sh:property [
+        sh:path mcp:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+mcp:PromptShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:Prompt ;
+    sh:property [
+        sh:path mcp:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1 ;
+    ] ;
+    sh:property [
+        sh:path mcp:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+mcp:MessageShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:Message ;
+    sh:property [
+        sh:path mcp:hasContent ;
+        sh:minCount 1 ;
+        sh:class mcp:Content ;
+    ] ;
+    sh:property [
+        sh:path mcp:hasRole ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class mcp:Role ;
+    ] .
+
+mcp:TextContentShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:TextContent ;
+    sh:property [
+        sh:path mcp:text ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1 ;
+    ] .
+
+mcp:ImageContentShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:ImageContent ;
+    sh:property [
+        sh:path mcp:imageData ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:base64Binary ;
+    ] ;
+    sh:property [
+        sh:path mcp:mimeType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^image/[-+.a-z0-9]+$"
+    ] .
+
+mcp:RoleValueShape
+    a sh:NodeShape ;
+    sh:targetClass mcp:Role ;
+    sh:in (
+        mcp:UserRole
+        mcp:AssistantRole
+    ) .
