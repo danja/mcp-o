@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Model Context Protocol Ontology FAQ</title>
+    <meta name="description"
+        content="Frequently asked questions about the Model Context Protocol (MCP) Ontology including implementation details and integration strategies.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="Model Context Protocol Ontology FAQ">
+    <meta property="og:description" content="Implementation guidance for the MCP ontology">
+    <meta property="og:type" content="website">
+
+    <style>
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font: 16px/1.6 system-ui, sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            color: #1a73e8;
+        }
+
+        h2 {
+            color: #185abc;
+        }
+
+        h3 {
+            color: #1967d2;
+            margin-top: 2em;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 1em;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .question {
+            font-weight: bold;
+            color: #1a73e8;
+            margin-top: 2em;
+        }
+
+        .answer {
+            margin-bottom: 2em;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .diagram-caption {
+            text-align: center;
+            font-style: italic;
+            margin-top: -15px;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Model Context Protocol Ontology FAQ</h1>
+
+    <section id="introduction">
+        <p>This document provides frequently asked questions and answers about implementing, extending, and using the
+            Model Context Protocol (MCP) Ontology. These guidelines will help developers and architects effectively
+            leverage the ontology for connecting language models with external context providers.</p>
+    </section>
+
+    <section class="toc">
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#basics">MCP Basics</a></li>
+            <li><a href="#implementation">Implementation</a></li>
+            <li><a href="#integration">Integration with Other Systems</a></li>
+            <li><a href="#resources">Resources and Tools</a></li>
+            <li><a href="#performance">Performance and Optimization</a></li>
+            <li><a href="#security">Security and Authentication</a></li>
+            <li><a href="#versioning">Versioning and Evolution</a></li>
+        </ul>
+    </section>
+
+    <section id="faq">
+        <h2 id="basics">MCP Basics</h2>
+
+        <div class="question" id="q1">Q1: What is the Model Context Protocol (MCP) and what problem does it solve?</div>
+        <div class="answer">
+            <p>The Model Context Protocol (MCP) is a standardized protocol that enables structured communication between
+                AI language models and external context providers. It addresses the critical challenge of connecting
+                language models with domain-specific data, tools, and resources in a consistent, organized manner.</p>
+
+            <p>Key problems MCP solves:</p>
+
+            <ol>
+                <li><strong>Standardized Resource Access:</strong> MCP provides a unified way for language models to
+                    access external information, eliminating the need for custom integrations for each data source.</li>
+
+                <li><strong>Tool Integration:</strong> It defines a standard format for language models to use external
+                    tools and functions, facilitating more powerful agent capabilities.</li>
+
+                <li><strong>Prompt Templating:</strong> MCP standardizes how prompt templates are defined and populated,
+                    improving consistency in interactions with language models.</li>
+
+                <li><strong>Multi-Modal Communication:</strong> The protocol supports various content types, including
+                    text and images, enabling richer information exchange.</li>
+            </ol>
+
+            <p>Through its RDF/OWL ontology representation, MCP creates a semantic foundation for these interactions,
+                enabling knowledge integration across systems while maintaining a clear, structured approach to context
+                management.</p>
+        </div>
+
+        <div class="question" id="q2">Q2: How does MCP differ from other LLM integration approaches?</div>
+        <div class="answer">
+            <p>MCP stands apart from other LLM integration approaches through several key differentiators:</p>
+
+            <ol>
+                <li><strong>RDF/OWL Foundation:</strong> Unlike many ad-hoc API-based approaches, MCP is built on
+                    semantic web standards, enabling formal reasoning about resources, tools, and their relationships.
+                </li>
+
+                <li><strong>Semantic Discovery:</strong> MCP enables language models to discover and understand
+                    available resources and tools through semantic queries rather than fixed API documentation.</li>
+
+                <li><strong>Language-Model Agnostic:</strong> MCP works with any language model implementation that
+                    supports the protocol, avoiding vendor lock-in.</li>
+
+                <li><strong>Focus on Context:</strong> While frameworks like LangChain focus on chaining operations, MCP
+                    specifically addresses the challenge of providing context to language models.</li>
+
+                <li><strong>Complementary to Agent Protocols:</strong> MCP works alongside agent communication protocols
+                    like A2A rather than competing with them, focusing on the language model's access to external
+                    context.</li>
+
+                <li><strong>Resource-Centric:</strong> MCP takes a resource-centric approach, treating data as
+                    first-class citizens with well-defined semantics, in contrast to function-first approaches.</li>
+            </ol>
+
+            <p>This approach positions MCP as a foundational protocol for the semantic integration of language models
+                with external resources, particularly valuable in enterprise contexts where formal knowledge
+                representation is essential.</p>
+        </div>
+
+        <div class="question" id="q3">Q3: What are the core components of the MCP ontology?</div>
+        <div class="answer">
+            <p>The MCP ontology consists of several core components that model the key entities and relationships in the
+                protocol:</p>
+
+            <ol>
+                <li><strong>Server:</strong> An implementation that provides resources, tools, and prompts to clients.
+                    Servers act as context providers in the MCP ecosystem.</li>
+
+                <li><strong>Client:</strong> An application that connects to servers and facilitates interaction with
+                    language models, often serving as the intermediary between models and external context.</li>
+
+                <li><strong>Resource:</strong> Contextual information made available to language models through MCP,
+                    including documents, data, and structured knowledge.</li>
+
+                <li><strong>Tool:</strong> Executable functions that allow models to perform actions beyond their core
+                    capabilities, such as data processing, external API calls, or specialized computations.</li>
+
+                <li><strong>Prompt:</strong> Templates that structure interactions with language models, providing
+                    consistent patterns for queries and responses.</li>
+
+                <li><strong>Message:</strong> A communication unit in MCP conversations, which can contain various types
+                    of content.</li>
+
+                <li><strong>Content:</strong> The payload of messages, which can take different forms such as text or
+                    images.</li>
+
+                <li><strong>Role:</strong> Defines the participant (user or assistant) in MCP communication.</li>
+
+                <li><strong>Capability:</strong> Represents functional abilities supported by MCP implementations.</li>
+            </ol>
+
+            <p>These components are connected through properties such as <code>hasCapability</code>,
+                <code>providesResource</code>, <code>providesTool</code>, <code>hasContent</code>, and
+                <code>hasRole</code>, forming a comprehensive semantic model of the MCP ecosystem.</p>
+        </div>
+
+        <h2 id="implementation">Implementation</h2>
+
+        <div class="question" id="q4">Q4: How do I implement an MCP server?</div>
+        <div class="answer">
+            <p>Implementing an MCP server involves several key steps to provide resources, tools, and prompts to
+                clients. Here's a comprehensive guide to implementation:</p>
+
+            <ol>
+                <li><strong>Define Your Resources:</strong>
+                    <p>First, identify the contextual information you want to make available. This could include
+                        documents, databases, knowledge graphs, or other structured data. For each resource:</p>
+                    <ul>
+                        <li>Assign a unique URI</li>
+                        <li>Provide descriptive metadata (name, description, MIME type)</li>
+                        <li>Define access patterns (direct content, query interface, etc.)</li>
+                    </ul>
+                </li>
+
+                <li><strong>Implement Tools:</strong>
+                    <p>Develop executable functions that extend language model capabilities:</p>
+                    <ul>
+                        <li>Define input/output schemas for each tool</li>
+                        <li>Implement the tool functionality</li>
+                        <li>Create descriptive metadata that helps models understand when and how to use the tool</li>
+                    </ul>
+                </li>
+
+                <li><strong>Create Prompt Templates:</strong>
+                    <p>Design templates that structure interactions with language models:</p>
+                    <ul>
+                        <li>Define variable placeholder patterns</li>
+                        <li>Document the purpose and use cases for each template</li>
+                        <li>Consider versioning for template evolution</li>
+                    </ul>
+                </li>
+
+                <li><strong>Set Up Server Infrastructure:</strong>
+                    <p>Implement the server components:</p>
+                    <ul>
+                        <li>Create an RDF store for semantic data</li>
+                        <li>Implement HTTP endpoints for MCP operations</li>
+                        <li>Set up authentication and authorization mechanisms</li>
+                        <li>Configure logging and monitoring</li>
+                    </ul>
+                </li>
+
+                <li><strong>Expose the Server Interface:</strong>
+                    <p>Provide standard endpoints for client discovery and interaction:</p>
+                    <ul>
+                        <li>Resource discovery endpoint</li>
+                        <li>Tool catalog endpoint</li>
+                        <li>Prompt template registry</li>
+                        <li>Resource retrieval endpoints</li>
+                        <li>Tool execution endpoints</li>
+                    </ul>
+                </li>
+
+                <li><strong>Implement Semantic Queries:</strong>
+                    <p>Support SPARQL or similar query capabilities to enable semantic discovery:</p>
+                    <pre>
+PREFIX mcp: &lt;http://purl.org/stuff/mcp/&gt;
+
+SELECT ?resource ?name ?type WHERE {
+  ?server a mcp:Server ;
+          mcp:providesResource ?resource .
+  ?resource mcp:name ?name ;
+            mcp:mimeType ?type .
+}</pre>
+                </li>
+
+                <li><strong>Add Validation:</strong>
+                    <p>Use SHACL constraints to validate resources, tools, and other MCP components:</p>
+                    <ul>
+                        <li>Implement the validation rules defined in mcp-shapes.shacl</li>
+                        <li>Add validation to your server API endpoints</li>
+                        <li>Provide helpful error messages for validation failures</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>For a concrete example, you might implement an MCP server in Python using RDFlib and FastAPI:</p>
+
+            <pre>
+from fastapi import FastAPI, HTTPException
+from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib.namespace import RDF, RDFS
+
+app = FastAPI()
+g = Graph()
+MCP = Namespace("http://purl.org/stuff/mcp/")
+
+# Initialize server
+server_uri = URIRef("http://example.org/mcp-server")
+g.add((server_uri, RDF.type, MCP.Server))
+
+# Add a resource
+@app.post("/resources/")
+async def create_resource(name: str, description: str, mime_type: str, uri: str):
+    resource_uri = URIRef(uri)
+    g.add((resource_uri, RDF.type, MCP.Resource))
+    g.add((resource_uri, MCP.name, Literal(name)))
+    g.add((resource_uri, MCP.description, Literal(description)))
+    g.add((resource_uri, MCP.mimeType, Literal(mime_type)))
+    g.add((server_uri, MCP.providesResource, resource_uri))
+    return {"uri": uri, "status": "created"}
+
+# Get resources
+@app.get("/resources/")
+async def get_resources():
+    resources = []
+    for s, p, o in g.triples((server_uri, MCP.providesResource, None)):
+        resource = {}
+        resource["uri"] = str(o)
+        for ps, pp, po in g.triples((o, MCP.name, None)):
+            resource["name"] = str(po)
+        for ps, pp, po in g.triples((o, MCP.description, None)):
+            resource["description"] = str(po)
+        for ps, pp, po in g.triples((o, MCP.mimeType, None)):
+            resource["mimeType"] = str(po)
+        resources.append(resource)
+    return resources</pre>
+
+            <p>This implementation approach provides a foundation for an MCP server that adheres to the semantic model
+                defined in the ontology while exposing practical APIs for client interaction.</p>
+        </div>
+
+        <div class="question" id="q5">Q5: How do I validate my MCP implementation?</div>
+        <div class="answer">
+            <p>Validating your MCP implementation ensures conformance to the protocol specification and ontology
+                constraints. Here's a comprehensive approach to validation:</p>
+
+            <ol>
+                <li><strong>SHACL Validation:</strong>
+                    <p>Use SHACL (Shapes Constraint Language) to validate your RDF data against the constraints defined
+                        in mcp-shapes.shacl:</p>
+                    <pre>
+from pyshacl import validate
+from rdflib import Graph
+
+# Load your data graph
+data_graph = Graph()
+data_graph.parse("your-mcp-data.ttl", format="turtle")
+
+# Load the shapes graph
+shapes_graph = Graph()
+shapes_graph.parse("mcp-shapes.shacl", format="turtle")
+
+# Validate
+result = validate(data_graph, shacl_graph=shapes_graph,
+                  inference='rdfs', abort_on_first=False)
+
+conforms, results_graph, results_text = result
+
+if not conforms:
+    print(f"Validation failed: {results_text}")
+else:
+    print("Validation passed")</pre>
+                </li>
+
+                <li><strong>Unit Testing:</strong>
+                    <p>Implement unit tests for each component of your MCP server or client:</p>
+                    <ul>
+                        <li>Test resource creation and retrieval</li>
+                        <li>Test tool registration and execution</li>
+                        <li>Test prompt template processing</li>
+                        <li>Test message handling and content type support</li>
+                    </ul>
+                </li>
+
+                <li><strong>Integration Testing:</strong>
+                    <p>Test the interaction between your MCP components and external systems:</p>
+                    <ul>
+                        <li>Test client-server communication</li>
+                        <li>Test language model integration</li>
+                        <li>Test resource access patterns</li>
+                        <li>Test tool execution with various parameters</li>
+                    </ul>
+                </li>
+
+                <li><strong>Conformance Testing:</strong>
+                    <p>Verify conformance to the MCP specification:</p>
+                    <ul>
+                        <li>Validate API endpoints against expected behavior</li>
+                        <li>Check response formats and error handling</li>
+                        <li>Verify semantic correctness of your RDF data</li>
+                    </ul>
+                </li>
+
+                <li><strong>Interoperability Testing:</strong>
+                    <p>Test interoperability with other MCP implementations:</p>
+                    <ul>
+                        <li>Connect your client to reference server implementations</li>
+                        <li>Connect reference clients to your server implementation</li>
+                        <li>Verify cross-implementation communication works as expected</li>
+                    </ul>
+                </li>
+
+                <li><strong>Performance Testing:</strong>
+                    <p>Assess the performance characteristics of your implementation:</p>
+                    <ul>
+                        <li>Measure resource retrieval latency</li>
+                        <li>Test tool execution under load</li>
+                        <li>Evaluate scalability with increasing numbers of resources</li>
+                    </ul>
+                </li>
+
+                <li><strong>Documentation Testing:</strong>
+                    <p>Verify that your implementation is well-documented:</p>
+                    <ul>
+                        <li>Ensure all resources have clear descriptions</li>
+                        <li>Verify that tool documentation explains input/output requirements</li>
+                        <li>Check that prompt templates include usage examples</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>A comprehensive test suite might include the following types of tests:</p>
+
+            <pre>
+# Example validation test for an MCP resource
+
+def test_resource_validation():
+    # Create a test resource
+    resource_data = """
+    @prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+    @prefix ex: &lt;http://example.org/&gt; .
+
+    ex:resource1 a mcp:Resource ;
+        mcp:uri "http://example.org/resources/doc1" ;
+        mcp:name "Test Document" ;
+        mcp:mimeType "text/plain" .
+    """
+
+    # Parse into graph
+    g = Graph()
+    g.parse(data=resource_data, format="turtle")
+
+    # Test validation
+    validation_result = validate_resource(g, URIRef("http://example.org/resource1"))
+    assert validation_result[0], f"Resource validation failed: {validation_result[2]}"</pre>
+
+            <p>By combining these validation approaches, you can ensure your MCP implementation correctly adheres to the
+                protocol specification and provides a reliable foundation for language model context integration.</p>
+        </div>
+
+        <h2 id="integration">Integration with Other Systems</h2>
+
+        <div class="question" id="q6">Q6: How does MCP integrate with the Agent-to-Agent (A2A) protocol?</div>
+        <div class="answer">
+            <p>MCP and A2A are complementary protocols that address different aspects of AI agent ecosystems. Their
+                integration creates a powerful framework for both agent communication and context access.</p>
+
+            <p><strong>Complementary Roles:</strong></p>
+            <ol>
+                <li>MCP focuses on connecting language models with external tools and resources, providing structured
+                    access to context.</li>
+                <li>A2A focuses on enabling communication between autonomous agents, supporting task management and
+                    collaboration.</li>
+            </ol>
+
+            <p><strong>Integration Patterns:</strong></p>
+            <ol>
+                <li><strong>MCP Resources as A2A Artifacts:</strong>
+                    <p>MCP resources can be packaged as A2A artifacts for transmission between agents. This allows
+                        resources discovered or created by one agent to be shared with others.</p>
+                    <pre>
+// A2A artifact containing MCP resource content
+{
+  "id": "artifact-123",
+  "name": "Weather Data",
+  "parts": [{
+    "type": "data",
+    "data": {
+      "resourceType": "mcp:Resource",
+      "resourceUri": "http://example.org/weather/nyc",
+      "content": { /* Resource content */ }
+    }
+  }]
+}</pre>
+                </li>
+
+                <li><strong>MCP Tools as A2A Skills:</strong>
+                    <p>Tools provided by MCP servers can be exposed as skills in an agent's A2A Agent Card, making them
+                        discoverable by other agents.</p>
+                    <pre>
+// Agent Card exposing MCP tools as skills
+{
+  "name": "Weather Agent",
+  "url": "https://weather-agent.example.com",
+  "skills": [{
+    "id": "get-forecast",
+    "name": "Get Weather Forecast",
+    "description": "Get weather forecast for a location",
+    "tags": ["weather", "forecast"],
+    "metadata": {
+      "mcpTool": "http://example.org/tools/weather-api"
+    }
+  }]
+}</pre>
+                </li>
+
+                <li><strong>MCP Servers as A2A Agents:</strong>
+                    <p>MCP servers can be wrapped as A2A agents, allowing them to participate in agent-to-agent
+                        communications:</p>
+                    <ul>
+                        <li>Task requests in A2A translate to resource or tool requests in MCP</li>
+                        <li>MCP responses become A2A artifacts</li>
+                        <li>MCP capabilities are exposed as A2A skills</li>
+                    </ul>
+                </li>
+
+                <li><strong>Semantic Bridging:</strong>
+                    <p>Create explicit semantic mappings between MCP and A2A concepts in your RDF models:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix a2a: &lt;http://purl.org/stuff/a2a/&gt; .
+@prefix bridge: &lt;http://example.org/mcp-a2a-bridge/&gt; .
+
+bridge:correspondsToSkill a owl:ObjectProperty ;
+  rdfs:domain mcp:Tool ;
+  rdfs:range a2a:Skill .
+
+bridge:encapsulatesResource a owl:ObjectProperty ;
+  rdfs:domain a2a:Artifact ;
+  rdfs:range mcp:Resource .</pre>
+                </li>
+            </ol>
+
+            <p><strong>Implementation Approach:</strong></p>
+
+            <p>A practical implementation strategy involves creating an integration layer that handles the translation
+                between protocols:</p>
+
+            <pre>
+class McpA2aBridge:
+    def __init__(self, mcp_server_url, a2a_agent_url):
+        self.mcp_client = McpClient(mcp_server_url)
+        self.a2a_client = A2aClient(a2a_agent_url)
+
+    async def handle_task(self, task):
+        # Extract resource or tool request from A2A task
+        request_type, params = self._extract_request(task)
+
+        if request_type == "resource":
+            # Get resource from MCP server
+            resource = await self.mcp_client.get_resource(params["uri"])
+
+            # Create A2A artifact from resource
+            artifact = self._create_artifact_from_resource(resource)
+
+            # Update the task with the artifact
+            await self.a2a_client.update_task(task.id, artifact=artifact)
+
+        elif request_type == "tool":
+            # Execute tool on MCP server
+            result = await self.mcp_client.execute_tool(
+                params["tool_id"], params["args"])
+
+            # Create A2A artifact from tool result
+            artifact = self._create_artifact_from_tool_result(result)
+
+            # Update the task with the artifact
+            await self.a2a_client.update_task(task.id, artifact=artifact)</pre>
+
+            <p>By integrating MCP and A2A, you create a comprehensive system where agents can communicate effectively
+                with each other while leveraging structured access to external context and tools. This combination
+                enables more powerful, context-aware agent ecosystems that can tackle complex tasks requiring both
+                collaboration and external information.</p>
+        </div>
+
+        <div class="question" id="q7">Q7: How can I integrate MCP with existing knowledge graphs and semantic web
+            technologies?</div>
+        <div class="answer">
+            <p>Integrating MCP with existing knowledge graphs and semantic web technologies leverages the natural
+                alignment between MCP's RDF foundation and the semantic web ecosystem. Here's a comprehensive approach
+                to this integration:</p>
+
+            <ol>
+                <li><strong>Knowledge Graph as MCP Resource:</strong>
+                    <p>Expose your knowledge graph as an MCP resource that can be queried by language models:</p>
+                    <ul>
+                        <li>Register the knowledge graph as an MCP resource with appropriate metadata</li>
+                        <li>Implement a SPARQL endpoint as an MCP tool for structured queries</li>
+                        <li>Provide natural language to SPARQL translation capabilities</li>
+                    </ul>
+                    <pre>
+// Register knowledge graph as an MCP resource
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+
+ex:knowledgeGraph a mcp:Resource ;
+    mcp:uri "http://example.org/knowledge-graph" ;
+    mcp:name "Enterprise Knowledge Graph" ;
+    mcp:description "Comprehensive knowledge graph of organizational data" ;
+    mcp:mimeType "application/ld+json" .</pre>
+                </li>
+
+                <li><strong>SPARQL Tool Implementation:</strong>
+                    <p>Create an MCP tool that enables language models to query your knowledge graph:</p>
+                    <pre>
+// SPARQL query tool registration
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+
+ex:sparqlTool a mcp:Tool ;
+    mcp:name "SPARQL Query Tool" ;
+    mcp:description "Execute SPARQL queries against the knowledge graph" ;
+    mcp:endpoint "http://example.org/api/sparql" .</pre>
+
+                    <p>Implementation of the tool:</p>
+                    <pre>
+from fastapi import FastAPI, HTTPException
+from rdflib import Graph
+from SPARQLWrapper import SPARQLWrapper, JSON
+
+app = FastAPI()
+sparql_endpoint = "http://example.org/sparql"
+
+@app.post("/api/sparql")
+async def execute_sparql(query: str):
+    sparql = SPARQLWrapper(sparql_endpoint)
+    sparql.setQuery(query)
+    sparql.setReturnFormat(JSON)
+
+    try:
+        results = sparql.query().convert()
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Query error: {str(e)}")</pre>
+                </li>
+
+                <li><strong>Ontology Alignment:</strong>
+                    <p>Create mappings between your domain ontologies and the MCP ontology:</p>
+                    <ul>
+                        <li>Define equivalence or subclass relationships between concepts</li>
+                        <li>Map properties between your ontology and MCP properties</li>
+                        <li>Use these mappings for seamless integration</li>
+                    </ul>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix org: &lt;http://example.org/organization-ontology#&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+
+# Map document concept to MCP Resource
+org:Document rdfs:subClassOf mcp:Resource .
+
+# Map content property
+org:hasContent owl:equivalentProperty mcp:text .</pre>
+                </li>
+
+                <li><strong>Semantic Enrichment:</strong>
+                    <p>Enrich MCP resources with semantic annotations from your knowledge graph:</p>
+                    <ul>
+                        <li>Add semantic tags and categories to resources</li>
+                        <li>Link resources to relevant entities in your knowledge graph</li>
+                        <li>Include provenance information</li>
+                    </ul>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+
+ex:report123 a mcp:Resource ;
+    mcp:uri "http://example.org/reports/123" ;
+    mcp:name "Q1 Financial Report" ;
+    mcp:mimeType "application/pdf" ;
+    dct:subject ex:Finance, ex:Quarterly ;
+    dct:creator ex:FinanceDepartment ;
+    dct:references ex:FinancialMetrics2023 .</pre>
+                </li>
+
+                <li><strong>Context-Aware Resource Retrieval:</strong>
+                    <p>Implement semantic search capabilities for MCP resource discovery:</p>
+                    <ul>
+                        <li>Use semantic similarity for resource ranking</li>
+                        <li>Implement graph traversal for related resource discovery</li>
+                        <li>Support concept expansion using ontology relationships</li>
+                    </ul>
+                    <pre>
+PREFIX mcp: &lt;http://purl.org/stuff/mcp/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX dct: &lt;http://purl.org/dc/terms/&gt;
+
+# Find resources related to finance and their related concepts
+SELECT ?resource ?name ?related_concept WHERE {
+  ?resource a mcp:Resource ;
+            mcp:name ?name ;
+            dct:subject ?subject .
+
+  ?subject rdfs:label "Finance" .
+
+  # Find related concepts
+  ?subject rdfs:seeAlso ?related_concept .
+}</pre>
+                </li>
+
+                <li><strong>Linked Data Principles:</strong>
+                    <p>Apply Linked Data principles to your MCP implementation:</p>
+                    <ul>
+                        <li>Use HTTP URIs for all resources</li>
+                        <li>Make these URIs dereferenceable</li>
+                        <li>Include links to related resources</li>
+                        <li>Provide resource representations in standard formats</li>
+                    </ul>
+                </li>
+
+                <li><strong>Reasoning and Inference:</strong>
+                    <p>Leverage semantic reasoners to enhance MCP resource discovery:</p>
+                    <ul>
+                        <li>Apply OWL reasoning for concept subsumption</li>
+                        <li>Use RDFS entailment for property inheritance</li>
+                        <li>Implement custom inference rules for domain-specific relationships</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>By integrating MCP with semantic web technologies and knowledge graphs, you create a context-rich
+                environment for language models that leverages the full power of semantic representations. This approach
+                enables more intelligent resource discovery, richer context understanding, and better alignment with
+                existing enterprise knowledge systems.</p>
+        </div>
+
+        <h2 id="resources">Resources and Tools</h2>
+
+        <div class="question" id="q8">Q8: What best practices should I follow when designing MCP resources?</div>
+        <div class="answer">
+            <p>Designing effective MCP resources requires a thoughtful approach to ensure they provide valuable context
+                to language models. Here are best practices for designing MCP resources:</p>
+
+            <ol>
+                <li><strong>Clear Identification and Description:</strong>
+                    <ul>
+                        <li>Assign globally unique URIs to each resource</li>
+                        <li>Provide concise, descriptive names that clearly indicate content</li>
+                        <li>Include comprehensive descriptions that explain the resource's purpose and content</li>
+                        <li>Use consistent naming conventions across your resource collection</li>
+                    </ul>
+                    <p>Example:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+
+ex:product-catalog a mcp:Resource ;
+    mcp:uri "http://example.org/resources/product-catalog" ;
+    mcp:name "Complete Product Catalog 2024" ;
+    mcp:description "Comprehensive catalog of all products with specifications, pricing, and availability information. Updated quarterly." ;
+    mcp:mimeType "application/json" .</pre>
+                </li>
+
+                <li><strong>Granularity and Scope:</strong>
+                    <ul>
+                        <li>Design resources with appropriate granularity for their intended use</li>
+                        <li>Avoid overly large resources that contain too much mixed information</li>
+                        <li>Create focused resources that address specific knowledge domains</li>
+                        <li>Consider creating hierarchies of resources for complex domains</li>
+                    </ul>
+                </li>
+
+                <li><strong>Metadata Enrichment:</strong>
+                    <ul>
+                        <li>Include comprehensive metadata that facilitates discovery</li>
+                        <li>Add subject classifications and tags</li>
+                        <li>Specify creation and modification dates</li>
+                        <li>Include version information for tracking changes</li>
+                        <li>Identify authors or sources for provenance</li>
+                    </ul>
+                    <p>Example:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+
+ex:market-analysis a mcp:Resource ;
+    mcp:uri "http://example.org/resources/market-analysis-2024" ;
+    mcp:name "Market Analysis Report 2024" ;
+    mcp:mimeType "text/html" ;
+    dct:created "2024-01-15"^^xsd:date ;
+    dct:modified "2024-03-20"^^xsd:date ;
+    dct:creator "Market Research Team" ;
+    dct:subject ex:MarketResearch, ex:CompetitiveAnalysis ;
+    ex:version "2.3" ;
+    ex:confidentiality "Internal Only" .</pre>
+                </li>
+
+                <li><strong>Content Quality and Structure:</strong>
+                    <ul>
+                        <li>Ensure high-quality, accurate content</li>
+                        <li>Structure complex resources with clear sections and hierarchies</li>
+                        <li>Use appropriate formats for different content types (HTML for documents, JSON for structured
+                            data, etc.)</li>
+                        <li>Normalize data formats for consistency</li>
+                    </ul>
+                </li>
+
+                <li><strong>Resource Relationships:</strong>
+                    <ul>
+                        <li>Define explicit relationships between related resources</li>
+                        <li>Create "isPartOf" relationships for component resources</li>
+                        <li>Establish "references" links to supporting resources</li>
+                        <li>Define "supersedes" relationships for versioned resources</li>
+                    </ul>
+                    <p>Example:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+
+ex:product-spec a mcp:Resource ;
+    mcp:uri "http://example.org/resources/product-spec-v3" ;
+    mcp:name "Product Specification V3" ;
+    dct:isPartOf ex:product-documentation ;
+    dct:references ex:engineering-standards ;
+    ex:supersedes ex:product-spec-v2 .</pre>
+                </li>
+
+                <li><strong>Access Control and Visibility:</strong>
+                    <ul>
+                        <li>Define clear access control rules for sensitive resources</li>
+                        <li>Consider creating public and private versions of resources</li>
+                        <li>Include visibility metadata to help with access decisions</li>
+                        <li>Implement row-level or field-level access for structured data resources</li>
+                    </ul>
+                </li>
+
+                <li><strong>Content Refresh Strategy:</strong>
+                    <ul>
+                        <li>Establish a clear policy for content updates</li>
+                        <li>Include "validUntil" or freshness indicators</li>
+                        <li>Implement automated refresh for frequently changing resources</li>
+                        <li>Maintain version history for important resources</li>
+                    </ul>
+                </li>
+
+                <li><strong>Searchability and Discoverability:</strong>
+                    <ul>
+                        <li>Include full-text indexing for textual resources</li>
+                        <li>Create vector embeddings for semantic search</li>
+                        <li>Implement faceted search based on resource metadata</li>
+                        <li>Provide sample queries that demonstrate resource utility</li>
+                    </ul>
+                </li>
+
+                <li><strong>Format Optimization:</strong>
+                    <ul>
+                        <li>Choose appropriate MIME types for different resource types</li>
+                        <li>Structure content in a way that's optimal for language model consumption</li>
+                        <li>Consider providing multiple representations of the same resource</li>
+                        <li>Use structured formats (JSON, XML) for complex data</li>
+                    </ul>
+                </li>
+
+                <li><strong>Documentation and Examples:</strong>
+                    <ul>
+                        <li>Provide usage examples for complex resources</li>
+                        <li>Document schema for structured data resources</li>
+                        <li>Include query examples for databases or knowledge graphs</li>
+                        <li>Add sample code for programmatic resource usage</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>By following these best practices, you'll create MCP resources that are discoverable, usable, and
+                valuable for language models seeking external context. Well-designed resources form the foundation of an
+                effective MCP implementation and enable language models to provide more accurate, contextually relevant
+                responses.</p>
+        </div>
+
+        <div class="question" id="q9">Q9: How should I design and implement MCP tools?</div>
+        <div class="answer">
+            <p>Designing and implementing effective MCP tools requires careful consideration of functionality,
+                interfaces, and integration with language models. Here are comprehensive guidelines for creating robust
+                MCP tools:</p>
+
+            <ol>
+                <li><strong>Clear Purpose and Functionality:</strong>
+                    <ul>
+                        <li>Define a single, well-scoped purpose for each tool</li>
+                        <li>Focus on atomic functionality rather than complex multi-step processes</li>
+                        <li>Design tools that solve specific problems language models cannot handle alone</li>
+                        <li>Consider common use cases like data retrieval, calculation, or external API access</li>
+                    </ul>
+                </li>
+
+                <li><strong>Descriptive Documentation:</strong>
+                    <ul>
+                        <li>Provide comprehensive descriptions that clearly explain the tool's purpose</li>
+                        <li>Include examples of when the tool should be used</li>
+                        <li>Document limitations and constraints</li>
+                        <li>Write documentation that helps language models decide when to use the tool</li>
+                    </ul>
+                    <p>Example:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+
+ex:weatherTool a mcp:Tool ;
+    mcp:name "Weather Forecast Tool" ;
+    mcp:description """
+    Provides current weather and forecasts for locations worldwide.
+    Use this tool when the user asks about weather conditions,
+    forecasts, or meteorological data for specific locations.
+    The tool requires a location parameter and optional
+    forecast days (1-10, default 1).
+    Not suitable for historical weather data older than 7 days.
+    """ ;
+    ex:example "Get today's weather in New York" ;
+    ex:example "What will the weather be like in Tokyo next week?" .</pre>
+                </li>
+
+                <li><strong>Parameter Design:</strong>
+                    <ul>
+                        <li>Create clear, well-typed parameters with descriptive names</li>
+                        <li>Provide detailed descriptions for each parameter</li>
+                        <li>Define sensible default values where appropriate</li>
+                        <li>Include parameter validation rules and constraints</li>
+                        <li>Use parameter grouping for related inputs</li>
+                    </ul>
+                    <p>Example:</p>
+                    <pre>
+ex:weatherTool ex:hasParameter [
+    ex:name "location" ;
+    ex:description "City name, address, or coordinates (latitude,longitude)" ;
+    ex:required true ;
+    ex:type "string" ;
+    ex:example "New York, NY" ;
+    ex:example "40.7128,-74.0060"
+] ;
+ex:hasParameter [
+    ex:name "days" ;
+    ex:description "Number of forecast days (1-10)" ;
+    ex:required false ;
+    ex:type "integer" ;
+    ex:default 1 ;
+    ex:minValue 1 ;
+    ex:maxValue 10
+] .</pre>
+                </li>
+
+                <li><strong>Response Structure:</strong>
+                    <ul>
+                        <li>Design consistent, well-structured responses</li>
+                        <li>Use clear field names that communicate meaning</li>
+                        <li>Include status information and error details</li>
+                        <li>Structure complex data hierarchically</li>
+                        <li>Provide human-readable summaries alongside structured data</li>
+                    </ul>
+                    <p>Example response structure:</p>
+                    <pre>
+{
+  "status": "success",
+  "data": {
+    "location": {
+      "name": "New York, NY",
+      "coordinates": {
+        "latitude": 40.7128,
+        "longitude": -74.0060
+      }
+    },
+    "current": {
+      "temperature": 22.5,
+      "condition": "Partly cloudy",
+      "humidity": 65,
+      "windSpeed": 12.3,
+      "windDirection": "NW"
+    },
+    "forecast": [
+      {
+        "date": "2024-04-19",
+        "high": 24.8,
+        "low": 18.2,
+        "condition": "Sunny"
+      }
+    ]
+  },
+  "summary": "Currently 22.5°C and partly cloudy in New York, with a forecast high of 24.8°C tomorrow."
+}</pre>
+                </li>
+
+                <li><strong>Error Handling:</strong>
+                    <ul>
+                        <li>Implement comprehensive error handling</li>
+                        <li>Return informative error messages that explain the issue</li>
+                        <li>Include suggestions for resolving errors</li>
+                        <li>Use consistent error codes and categories</li>
+                        <li>Handle partial failures gracefully</li>
+                    </ul>
+                    <p>Example error response:</p>
+                    <pre>
+{
+  "status": "error",
+  "error": {
+    "code": "LOCATION_NOT_FOUND",
+    "message": "Could not find location 'Atlantis'",
+    "suggestions": [
+      "Check the spelling of the location name",
+      "Try using geographic coordinates instead",
+      "Use a larger nearby city"
+    ]
+  }
+}</pre>
+                </li>
+
+                <li><strong>Performance Considerations:</strong>
+                    <ul>
+                        <li>Optimize for low latency where possible</li>
+                        <li>Implement caching for frequently accessed data</li>
+                        <li>Consider rate limiting to prevent abuse</li>
+                        <li>Add timeout handling for external dependencies</li>
+                        <li>Include performance metadata in responses</li>
+                    </ul>
+                </li>
+
+                <li><strong>Security and Access Control:</strong>
+                    <ul>
+                        <li>Implement proper authentication and authorization</li>
+                        <li>Validate and sanitize all input parameters</li>
+                        <li>Apply principle of least privilege for external API calls</li>
+                        <li>Consider data privacy implications</li>
+                        <li>Audit tool usage and access patterns</li>
+                    </ul>
+                </li>
+
+                <li><strong>Integration with Resources:</strong>
+                    <ul>
+                        <li>Create tools that complement available MCP resources</li>
+                        <li>Design tools that can analyze or transform resource content</li>
+                        <li>Implement tools that discover relevant resources</li>
+                        <li>Enable resource creation or modification via tools</li>
+                    </ul>
+                    <p>Example tool with resource integration:</p>
+                    <pre>
+ex:documentAnalysisTool a mcp:Tool ;
+    mcp:name "Document Analysis Tool" ;
+    mcp:description "Analyzes documents to extract key entities, topics, and sentiment" ;
+    ex:hasParameter [
+        ex:name "resourceUri" ;
+        ex:description "URI of the document resource to analyze" ;
+        ex:required true ;
+        ex:type "string"
+    ] ;
+    ex:operatesOn mcp:Resource ;
+    ex:produces ex:AnalysisResult .</pre>
+                </li>
+
+                <li><strong>Implementation Approaches:</strong>
+                    <ul>
+                        <li>Implement tools as RESTful API endpoints</li>
+                        <li>Use serverless functions for lightweight tools</li>
+                        <li>Consider gRPC for performance-critical tools</li>
+                        <li>Implement synchronous tools for immediate results</li>
+                        <li>Use asynchronous patterns for long-running operations</li>
+                    </ul>
+                    <p>Example implementation using FastAPI:</p>
+                    <pre>
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+import httpx
+
+app = FastAPI()
+
+class WeatherRequest(BaseModel):
+    location: str = Field(..., description="City name or coordinates")
+    days: int = Field(1, ge=1, le=10, description="Forecast days")
+
+class WeatherResponse(BaseModel):
+    status: str
+    data: dict = None
+    error: dict = None
+    summary: str = None
+
+@app.post("/tools/weather", response_model=WeatherResponse)
+async def weather_tool(request: WeatherRequest):
+    try:
+        # Call external weather API
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                "https://api.weather.example.com/forecast",
+                params={"q": request.location, "days": request.days}
+            )
+            response.raise_for_status()
+            data = response.json()
+
+        # Format response
+        return {
+            "status": "success",
+            "data": data,
+            "summary": f"Currently {data['current']['temperature']}°C and {data['current']['condition']} in {data['location']['name']}"
+        }
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 404:
+            return {
+                "status": "error",
+                "error": {
+                    "code": "LOCATION_NOT_FOUND",
+                    "message": f"Could not find location '{request.location}'",
+                    "suggestions": [
+                        "Check the spelling of the location name",
+                        "Try using geographic coordinates instead",
+                        "Use a larger nearby city"
+                    ]
+                }
+            }
+        raise HTTPException(status_code=500, detail=f"Weather API error: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")</pre>
+                </li>
+
+                <li><strong>Testing and Validation:</strong>
+                    <ul>
+                        <li>Create comprehensive test suites for each tool</li>
+                        <li>Test with various input combinations</li>
+                        <li>Validate edge cases and error conditions</li>
+                        <li>Implement integration tests with language models</li>
+                        <li>Test performance under load</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>By following these guidelines, you'll create MCP tools that extend language model capabilities
+                effectively, providing reliable functionality while maintaining a clear interface that models can easily
+                understand and use. Well-designed tools dramatically enhance the utility of language models by
+                connecting them to external systems and capabilities beyond their training.</p>
+        </div>
+
+        <h2 id="performance">Performance and Optimization</h2>
+
+        <div class="question" id="q10">Q10: How can I optimize MCP for RAG implementations?</div>
+        <div class="answer">
+            <p>Optimizing MCP for Retrieval-Augmented Generation (RAG) implementations involves several strategies to
+                enhance retrieval accuracy, improve relevance, and ensure efficient operation. Here's a comprehensive
+                approach to optimizing MCP for RAG:</p>
+
+            <ol>
+                <li><strong>Resource Indexing Strategies:</strong>
+                    <ul>
+                        <li>Implement chunking strategies that preserve semantic coherence</li>
+                        <li>Create overlapping chunks to maintain context across boundaries</li>
+                        <li>Index at multiple granularities (document, section, paragraph)</li>
+                        <li>Generate and store high-quality embeddings for all text content</li>
+                        <li>Consider hierarchical indexing for structured documents</li>
+                    </ul>
+                    <p>Implementation example:</p>
+                    <pre>
+from sentence_transformers import SentenceTransformer
+from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib.namespace import RDF
+
+MCP = Namespace("http://purl.org/stuff/mcp/")
+g = Graph()
+encoder = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Index a resource with chunking
+def index_resource(resource_uri, text_content, chunk_size=500, overlap=100):
+    chunks = []
+    # Create overlapping chunks
+    for i in range(0, len(text_content), chunk_size - overlap):
+        chunk = text_content[i:i + chunk_size]
+        if len(chunk) < 50:  # Skip very small chunks
+            continue
+
+        # Create a chunk resource
+        chunk_uri = URIRef(f"{resource_uri}#chunk{len(chunks)}")
+        g.add((chunk_uri, RDF.type, MCP.Resource))
+        g.add((chunk_uri, MCP.text, Literal(chunk)))
+        g.add((chunk_uri, MCP.isPartOf, resource_uri))
+
+        # Create and store embedding
+        embedding = encoder.encode(chunk)
+        store_embedding(chunk_uri, embedding)
+
+        chunks.append({
+            'uri': chunk_uri,
+            'text': chunk,
+            'embedding': embedding
+        })
+
+    return chunks</pre>
+                </li>
+
+                <li><strong>Hybrid Retrieval Implementation:</strong>
+                    <ul>
+                        <li>Combine vector similarity search with boolean/keyword filters</li>
+                        <li>Leverage graph structure for relationship-based retrieval</li>
+                        <li>Implement re-ranking of initial retrieval results</li>
+                        <li>Use metadata filters to narrow search scope</li>
+                    </ul>
+                    <p>Example of hybrid retrieval:</p>
+                    <pre>
+def hybrid_retrieve(query, filters=None, top_k=10):
+    # 1. Generate query embedding
+    query_embedding = encoder.encode(query)
+
+    # 2. Keyword extraction for filtering
+    keywords = extract_keywords(query)
+
+    # 3. Initial broad vector search
+    candidates = vector_search(query_embedding, top_k=top_k*3)
+
+    # 4. Apply metadata filters if specified
+    if filters:
+        candidates = apply_filters(candidates, filters)
+
+    # 5. Apply keyword filtering
+    if keywords:
+        candidates = keyword_filter(candidates, keywords)
+
+    # 6. Re-rank based on combined score
+    results = rerank_results(candidates, query, query_embedding)
+
+    # 7. Return top k results
+    return results[:top_k]</pre>
+                </li>
+
+                <li><strong>Semantic Enrichment:</strong>
+                    <ul>
+                        <li>Add semantic annotations to resources and chunks</li>
+                        <li>Link text mentions to knowledge graph entities</li>
+                        <li>Extract and index key concepts and relationships</li>
+                        <li>Include structured metadata alongside embeddings</li>
+                    </ul>
+                    <p>Example:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix schema: &lt;http://schema.org/&gt; .
+
+# Resource chunk with semantic annotations
+ex:document1#chunk3 a mcp:Resource ;
+    mcp:text "The board approved the quarterly dividend of $0.88 per share,
+              payable on June 15, 2024, to shareholders of record as of May 31, 2024." ;
+    mcp:isPartOf ex:document1 ;
+    ex:mentions ex:QuarterlyDividend, ex:ShareholderRecord ;
+    ex:hasEntity [
+        a schema:MonetaryAmount ;
+        schema:value "0.88" ;
+        schema:currency "USD" ;
+        schema:description "quarterly dividend per share"
+    ] ;
+    ex:hasEntity [
+        a schema:Date ;
+        schema:value "2024-06-15" ;
+        schema:description "dividend payment date"
+    ] .</pre>
+                </li>
+
+                <li><strong>Context Window Optimization:</strong>
+                    <ul>
+                        <li>Dynamically adjust retrieval quantity based on query complexity</li>
+                        <li>Implement smart truncation that preserves key information</li>
+                        <li>Use compression techniques for verbose content</li>
+                        <li>Implement recursive retrieval for complex queries</li>
+                    </ul>
+                    <p>Implementation example:</p>
+                    <pre>
+def optimize_context(query, retrieved_chunks, max_tokens=3000):
+    # Estimate query complexity
+    complexity = estimate_complexity(query)
+
+    # Adjust chunk selection based on complexity
+    if complexity == "high":
+        # For complex queries, focus on fewer but most relevant chunks
+        chunks_to_use = retrieved_chunks[:3]
+    elif complexity == "medium":
+        # For medium complexity, use a balanced approach
+        chunks_to_use = retrieved_chunks[:5]
+    else:
+        # For simple queries, include more context
+        chunks_to_use = retrieved_chunks[:7]
+
+    # Prepare context while respecting token limit
+    context = ""
+    token_count = 0
+
+    for chunk in chunks_to_use:
+        # Estimate tokens in this chunk
+        chunk_tokens = estimate_tokens(chunk['text'])
+
+        if token_count + chunk_tokens > max_tokens:
+            # Apply smart truncation if needed
+            available_tokens = max_tokens - token_count
+            truncated_text = smart_truncate(chunk['text'], available_tokens)
+            context += f"\n\nSource: {chunk['uri']}\n{truncated_text}"
+            break
+
+        # Add full chunk if it fits
+        context += f"\n\nSource: {chunk['uri']}\n{chunk['text']}"
+        token_count += chunk_tokens
+
+    return context</pre>
+                </li>
+
+                <li><strong>Query Processing Optimization:</strong>
+                    <ul>
+                        <li>Implement query rewriting for improved retrieval</li>
+                        <li>Extract multiple query intents for complex questions</li>
+                        <li>Create query variations to improve retrieval recall</li>
+                        <li>Apply domain-specific query expansion</li>
+                    </ul>
+                    <p>Example implementation:</p>
+                    <pre>
+def optimize_query(original_query):
+    # 1. Query analysis
+    query_type = analyze_query_type(original_query)
+
+    # 2. Query decomposition for complex queries
+    if query_type == "complex":
+        sub_queries = decompose_query(original_query)
+        results = []
+        for sub_query in sub_queries:
+            sub_results = process_simple_query(sub_query)
+            results.extend(sub_results)
+        return merge_results(results)
+
+    # 3. Query expansion for simple queries
+    if query_type == "simple":
+        expanded_query = expand_query_terms(original_query)
+        return process_simple_query(expanded_query)
+
+    # 4. Specialized handling for definitional queries
+    if query_type == "definitional":
+        return handle_definition_query(original_query)
+
+    # Default case
+    return process_simple_query(original_query)</pre>
+                </li>
+
+                <li><strong>Performance Optimizations:</strong>
+                    <ul>
+                        <li>Implement caching for frequent queries</li>
+                        <li>Use approximate nearest neighbor search for large vector collections</li>
+                        <li>Partition embeddings for faster searches</li>
+                        <li>Optimize SPARQL query patterns for graph traversal</li>
+                        <li>Implement batch processing for related queries</li>
+                    </ul>
+                </li>
+
+                <li><strong>Relevance Feedback Integration:</strong>
+                    <ul>
+                        <li>Implement feedback mechanisms to improve retrieval</li>
+                        <li>Track which retrieved chunks are actually used in responses</li>
+                        <li>Apply reinforcement learning from human feedback</li>
+                        <li>Implement automatic relevance scoring</li>
+                    </ul>
+                    <p>Example feedback integration:</p>
+                    <pre>
+def record_chunk_usage(query, retrieved_chunks, used_chunks, feedback_score):
+    """Record which chunks were actually used in generating the response"""
+    # Get URIs of used chunks
+    used_chunk_uris = [chunk['uri'] for chunk in used_chunks]
+
+    # Update usage statistics in the graph
+    for chunk in retrieved_chunks:
+        chunk_uri = chunk['uri']
+        was_used = chunk_uri in used_chunk_uris
+
+        # Create usage record
+        usage_uri = URIRef(f"http://example.org/usage/{uuid.uuid4()}")
+        g.add((usage_uri, RDF.type, ex:RetrievalUsage))
+        g.add((usage_uri, ex:query, Literal(query)))
+        g.add((usage_uri, ex:retrievedChunk, URIRef(chunk_uri)))
+        g.add((usage_uri, ex:wasUsed, Literal(was_used)))
+        g.add((usage_uri, ex:relevanceScore, Literal(feedback_score if was_used else 0)))
+        g.add((usage_uri, ex:timestamp, Literal(datetime.now().isoformat())))</pre>
+                </li>
+
+                <li><strong>Prompt Engineering:</strong>
+                    <ul>
+                        <li>Create retrieval-aware prompt templates</li>
+                        <li>Include source attribution instructions</li>
+                        <li>Add instructions for handling conflicting information</li>
+                        <li>Implement context-sensitive prompting</li>
+                    </ul>
+                    <p>Example RAG prompt template:</p>
+                    <pre>
+def create_rag_prompt(query, context):
+    return f"""
+You are an assistant with access to the following information.
+Use this information to answer the user's question accurately.
+If the information provided doesn't contain the answer,
+acknowledge that and provide your best response based on your knowledge.
+Always cite sources when using specific information from the context.
+
+CONTEXT:
+{context}
+
+USER QUESTION:
+{query}
+
+Please provide a comprehensive answer with proper source attribution.
+"""</pre>
+                </li>
+            </ol>
+
+            <p>By implementing these optimization strategies, you can create an MCP-based RAG system that delivers
+                highly relevant, accurate results while maintaining good performance. These approaches leverage the
+                semantic richness of MCP's RDF foundation while incorporating modern retrieval techniques for optimal
+                results.</p>
+        </div>
+
+        <h2 id="security">Security and Authentication</h2>
+
+        <div class="question" id="q11">Q11: What security considerations should I address when implementing MCP?</div>
+        <div class="answer">
+            <p>Implementing MCP securely requires addressing several critical security considerations across different
+                aspects of the system. Here's a comprehensive approach to security for MCP implementations:</p>
+
+            <ol>
+                <li><strong>Authentication and Identity:</strong>
+                    <ul>
+                        <li>Implement robust authentication for all MCP server endpoints</li>
+                        <li>Support industry-standard authentication protocols (OAuth, OIDC, JWT)</li>
+                        <li>Consider multi-factor authentication for sensitive operations</li>
+                        <li>Implement proper session management with secure cookies</li>
+                        <li>Define clear identity propagation patterns between clients and servers</li>
+                    </ul>
+                    <p>Example implementation:</p>
+                    <pre>
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+import jwt
+from datetime import datetime, timedelta
+
+app = FastAPI()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+SECRET_KEY = "your-secret-key"  # Should be stored securely
+ALGORITHM = "HS256"
+
+def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=15)):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + expires_delta
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+    except jwt.PyJWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return username
+
+@app.get("/resources/")
+async def get_resources(current_user: str = Depends(get_current_user)):
+    # Return resources authorized for current_user
+    return get_authorized_resources(current_user)</pre>
+                </li>
+
+                <li><strong>Authorization and Access Control:</strong>
+                    <ul>
+                        <li>Implement fine-grained authorization for resources and tools</li>
+                        <li>Apply principle of least privilege throughout</li>
+                        <li>Consider attribute-based access control (ABAC) for complex scenarios</li>
+                        <li>Implement resource tagging for security classification</li>
+                        <li>Support role-based access control (RBAC) with clear role definitions</li>
+                    </ul>
+                    <p>Example RDF representation of access control:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix sec: &lt;http://example.org/security/&gt; .
+
+# Resource with access control
+ex:sensitive-report a mcp:Resource ;
+    mcp:uri "http://example.org/resources/sensitive-report" ;
+    mcp:name "Sensitive Financial Report" ;
+    sec:accessLevel "Confidential" ;
+    sec:requiredPermission sec:FinancialDataAccess ;
+    sec:requiredRole sec:SeniorManagement .
+
+# User permissions
+ex:user123 a sec:User ;
+    sec:hasPermission sec:FinancialDataAccess ;
+    sec:hasRole sec:SeniorManagement .</pre>
+                </li>
+
+                <li><strong>Data Protection:</strong>
+                    <ul>
+                        <li>Implement encryption for data at rest and in transit</li>
+                        <li>Establish data classification levels for resources</li>
+                        <li>Consider field-level encryption for sensitive data</li>
+                        <li>Implement secure data deletion policies</li>
+                        <li>Control information flow between components</li>
+                    </ul>
+                </li>
+
+                <li><strong>Input Validation and Sanitization:</strong>
+                    <ul>
+                        <li>Validate all input parameters for type, format, and range</li>
+                        <li>Implement context-aware sanitization for different data types</li>
+                        <li>Protect against injection attacks (SQL, SPARQL, etc.)</li>
+                        <li>Use safe parsing methods for structured data</li>
+                        <li>Implement rate limiting and request validation</li>
+                    </ul>
+                    <p>Example of secure SPARQL query handling:</p>
+                    <pre>
+def execute_safe_sparql(query_template, parameters):
+    """Execute a SPARQL query with safely applied parameters"""
+    # Validate parameter types and values
+    validated_params = {}
+
+    for key, value in parameters.items():
+        if key == "resourceType":
+            # Ensure valid resource type
+            if value not in ["Document", "Image", "Dataset"]:
+                raise ValueError(f"Invalid resource type: {value}")
+            validated_params[key] = value
+        elif key == "limit":
+            # Ensure numeric limit within range
+            try:
+                limit = int(value)
+                if limit < 1 or limit > 100:
+                    raise ValueError("Limit must be between 1 and 100")
+                validated_params[key] = limit
+            except (ValueError, TypeError):
+                raise ValueError(f"Invalid limit value: {value}")
+        # Add other parameter validations as needed
+
+    # Apply validated parameters to template using safe placeholders
+    # not string concatenation
+    query = query_template.format(**validated_params)
+
+    # Now execute the query
+    results = graph.query(query)
+    return results</pre>
+                </li>
+
+                <li><strong>API Security:</strong>
+                    <ul>
+                        <li>Implement proper HTTP security headers</li>
+                        <li>Use rate limiting to prevent abuse</li>
+                        <li>Consider API key rotation policies</li>
+                        <li>Implement secure error handling that doesn't leak sensitive information</li>
+                        <li>Apply proper request validation</li>
+                    </ul>
+                    <p>Example HTTP security headers:</p>
+                    <pre>
+from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# Configure CORS with appropriate origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://trusted-client.example.com"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Authorization"],
+)
+
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+
+    # Add security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Content-Security-Policy"] = "default-src 'self'"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["Cache-Control"] = "no-store"
+
+    return response</pre>
+                </li>
+
+                <li><strong>Secure Tool Execution:</strong>
+                    <ul>
+                        <li>Implement sandboxing for tool execution</li>
+                        <li>Apply resource limits (CPU, memory, execution time)</li>
+                        <li>Validate tool inputs and outputs</li>
+                        <li>Implement proper error handling for tool failures</li>
+                        <li>Consider access controls specific to tool functionality</li>
+                    </ul>
+                </li>
+
+                <li><strong>Logging and Auditing:</strong>
+                    <ul>
+                        <li>Implement comprehensive logging for security events</li>
+                        <li>Log access to sensitive resources</li>
+                        <li>Record tool executions with parameters and results</li>
+                        <li>Ensure logs are tamper-proof and properly retained</li>
+                        <li>Implement monitoring for suspicious activity</li>
+                    </ul>
+                    <p>Example logging implementation:</p>
+                    <pre>
+import logging
+import json
+from datetime import datetime
+
+# Configure secure logging
+logger = logging.getLogger("mcp_security")
+logger.setLevel(logging.INFO)
+
+# Structured log handler
+class SecurityLogHandler(logging.Handler):
+    def emit(self, record):
+        try:
+            # Create structured log entry
+            log_entry = {
+                "timestamp": datetime.utcnow().isoformat(),
+                "level": record.levelname,
+                "message": record.getMessage(),
+                "user": getattr(record, "user", "unknown"),
+                "action": getattr(record, "action", "unknown"),
+                "resource": getattr(record, "resource", None),
+                "tool": getattr(record, "tool", None),
+                "success": getattr(record, "success", None),
+                "ip_address": getattr(record, "ip_address", None),
+                "request_id": getattr(record, "request_id", None)
+            }
+
+            # Log to secure destination
+            print(json.dumps(log_entry))  # Replace with secure log destination
+        except Exception as e:
+            print(f"Error in security logging: {e}")
+
+# Add handler to logger
+logger.addHandler(SecurityLogHandler())
+
+# Example usage
+def log_resource_access(user, resource_uri, ip_address, success):
+    logger.info(
+        f"Resource access: {resource_uri}",
+        extra={
+            "user": user,
+            "action": "resource_access",
+            "resource": resource_uri,
+            "ip_address": ip_address,
+            "success": success,
+            "request_id": get_request_id()
+        }
+    )</pre>
+                </li>
+
+                <li><strong>Privacy Considerations:</strong>
+                    <ul>
+                        <li>Implement data minimization principles</li>
+                        <li>Establish clear data retention policies</li>
+                        <li>Support privacy preferences and consent management</li>
+                        <li>Consider anonymization for sensitive resources</li>
+                        <li>Implement mechanisms for data subject rights (access, deletion)</li>
+                    </ul>
+                </li>
+
+                <li><strong>Supply Chain Security:</strong>
+                    <ul>
+                        <li>Validate the integrity of external dependencies</li>
+                        <li>Implement secure update processes</li>
+                        <li>Consider software bill of materials (SBOM) for transparency</li>
+                        <li>Conduct security assessments of integrated components</li>
+                    </ul>
+                </li>
+
+                <li><strong>Threat Modeling:</strong>
+                    <ul>
+                        <li>Conduct thorough threat modeling for your MCP implementation</li>
+                        <li>Consider potential attack vectors specific to semantic systems</li>
+                        <li>Model threats from external actors and insider risks</li>
+                        <li>Develop mitigation strategies for identified threats</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>By addressing these security considerations, you'll develop an MCP implementation that protects sensitive
+                resources, ensures proper access control, and maintains the integrity of interactions between language
+                models and external context. Security should be considered at every stage of the implementation process,
+                from design to deployment and ongoing operations.</p>
+        </div>
+
+        <h2 id="versioning">Versioning and Evolution</h2>
+
+        <div class="question" id="q12">Q12: How should I handle versioning of MCP resources and tools?</div>
+        <div class="answer">
+            <p>Effective versioning of MCP resources and tools is essential for managing change while maintaining
+                compatibility. Here's a comprehensive approach to versioning in MCP implementations:</p>
+
+            <ol>
+                <li><strong>Resource Versioning Strategies:</strong>
+                    <ul>
+                        <li>Implement explicit version identifiers for resources</li>
+                        <li>Use semantic versioning (Major.Minor.Patch) for significant resources</li>
+                        <li>Consider date-based versioning for frequently updated resources</li>
+                        <li>Maintain version history and change logs</li>
+                    </ul>
+                    <p>Example resource versioning in RDF:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix semver: &lt;http://example.org/semver/&gt; .
+
+# Current version of a resource
+ex:product-manual-v2 a mcp:Resource ;
+    mcp:uri "http://example.org/resources/product-manual/v2.3.1" ;
+    mcp:name "Product Manual" ;
+    mcp:description "Comprehensive guide for product installation and usage" ;
+    semver:major 2 ;
+    semver:minor 3 ;
+    semver:patch 1 ;
+    dcterms:created "2024-03-15"^^xsd:date ;
+    dcterms:modified "2024-04-10"^^xsd:date ;
+    dcterms:isVersionOf ex:product-manual ;  # Base resource
+    dcterms:replaces ex:product-manual-v2.3.0 .  # Previous version
+
+# Version history tracking
+ex:product-manual a mcp:ResourceSeries ;
+    mcp:name "Product Manual Series" ;
+    mcp:currentVersion ex:product-manual-v2 ;
+    mcp:versionHistory (
+        ex:product-manual-v1.0.0
+        ex:product-manual-v1.1.0
+        ex:product-manual-v2.0.0
+        ex:product-manual-v2.1.0
+        ex:product-manual-v2.2.0
+        ex:product-manual-v2.3.0
+        ex:product-manual-v2.3.1
+    ) .</pre>
+                </li>
+
+                <li><strong>Tool Versioning Patterns:</strong>
+                    <ul>
+                        <li>Version tools based on their interface and behavior changes</li>
+                        <li>Increment major version for breaking changes to the interface</li>
+                        <li>Use minor versions for backward-compatible enhancements</li>
+                        <li>Apply patch versions for bug fixes and minor improvements</li>
+                    </ul>
+                    <p>Example tool versioning:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix semver: &lt;http://example.org/semver/&gt; .
+
+# Current version of a tool
+ex:data-analysis-tool-v3 a mcp:Tool ;
+    mcp:name "Data Analysis Tool v3.2.1" ;
+    mcp:description "Analyzes datasets to extract insights and trends" ;
+    semver:major 3 ;
+    semver:minor 2 ;
+    semver:patch 1 ;
+    ex:endpoint "https://api.example.org/tools/data-analysis/v3" ;
+    ex:isVersionOf ex:data-analysis-tool ;  # Base tool
+    ex:changelog "Added support for time series forecasting" ;
+    ex:documentationUrl "https://docs.example.org/tools/data-analysis/v3.2.1" .</pre>
+                </li>
+
+                <li><strong>Version Compatibility Management:</strong>
+                    <ul>
+                        <li>Define clear compatibility policies for different versions</li>
+                        <li>Document deprecated features with timeline for removal</li>
+                        <li>Consider implementing version negotiation between clients and servers</li>
+                        <li>Provide compatibility matrices for interrelated components</li>
+                    </ul>
+                    <p>Example compatibility declaration:</p>
+                    <pre>
+@prefix mcp: &lt;http://purl.org/stuff/mcp/&gt; .
+@prefix ex: &lt;http://example.org/&gt; .
+@prefix compat: &lt;http://example.org/compatibility/&gt; .
+
+ex:data-analysis-tool-v3 compat:compatibleWith [
+    compat:minClientVersion "2.0.0" ;
+    compat:maxClientVersion "4.99.99" ;
+    compat:recommendedClientVersion "3.2.0" ;
+    compat:deprecationDate "2025-12-31"^^xsd:date ;
+    compat:endOfSupportDate "2026-12-31"^^xsd:date ;
+] .</pre>
+                </li>
+
+                <li><strong>Version Identification Methods:</strong>
+                    <ul>
+                        <li>Use URI patterns that include version information</li>
+                        <li>Include version information in resource metadata</li>
+                        <li>Consider using content-based identifiers (e.g., hashes) for immutable resources</li>
+                        <li>Implement version headers in API responses</li>
+                    </ul>
+                    <p>Example versioning in API implementation:</p>
+                    <pre>
+from fastapi import FastAPI, Header, Depends, HTTPException
+from typing import Optional
+
+app = FastAPI()
+
+# Version header extraction
+def get_api_version(accept_version: Optional[str] = Header(None, alias="Accept-Version")):
+    if accept_version is None:
+        # Default to latest stable version if not specified
+        return "3.2"
+    return accept_version
+
+# Version-specific endpoints
+@app.get("/tools/data-analysis", tags=["Data Analysis"])
+async def analyze_data(version: str = Depends(get_api_version), data: dict = None):
+    if version.startswith("1."):
+        # Legacy v1 implementation
+        return legacy_analyze_data(data)
+    elif version.startswith("2."):
+        # v2 implementation
+        return v2_analyze_data(data)
+    elif version.startswith("3."):
+        # Current v3 implementation
+        return v3_analyze_data(data)
+    else:
+        raise HTTPException(status_code=400, detail=f"Unsupported version: {version}")</pre>
+                </li>
+
+                <li><strong>Migration and Upgrade Paths:</strong>
+                    <ul>
+                        <li>Provide clear documentation for version migrations</li>
+                        <li>Implement version-specific upgrade tools where needed</li>
+                        <li>Consider automatic data migration for compatible changes</li>
+                        <li>Support gradual migration with parallel version support</li>
+                    </ul>
+                </li>
+
+                <li><strong>Version Discovery:</strong>
+                    <ul>
+                        <li>Implement version discovery endpoints or mechanisms</li>
+                        <li>Provide clear version listings in resource catalogs</li>
+                        <li>Include version information in resource search responses</li>
+                        <li>Consider implementing a timeline view of resource evolution</li>
+                    </ul>
+                    <p>Example version discovery endpoint:</p>
+                    <pre>
+@app.get("/versions")
+async def get_versions():
+    """Return information about available versions"""
+    return {
+        "current": "3.2.1",
+        "stable": ["3.2.1", "3.1.0", "2.5.4"],
+        "deprecated": ["1.x", "2.0-2.4"],
+        "upcoming": "4.0.0-beta",
+        "versions": [
+            {
+                "version": "3.2.1",
+                "released": "2024-04-10",
+                "status": "current",
+                "eol": "2026-12-31",
+                "changes": [
+                    "Added time series forecasting",
+                    "Improved performance for large datasets",
+                    "Fixed bug in correlation analysis"
+                ]
+            },
+            # Additional version entries
+        ]
+    }</pre>
+                </li>
+
+                <li><strong>Immutable Resource Handling:</strong>
+                    <ul>
+                        <li>Treat resource versions as immutable once published</li>
+                        <li>Create new versions rather than modifying existing ones</li>
+                        <li>Implement archiving strategies for obsolete versions</li>
+                        <li>Consider content-addressed storage for immutable resources</li>
+                    </ul>
+                </li>
+
+                <li><strong>Semantic Versioning Implementation:</strong>
+                    <ul>
+                        <li>Define clear criteria for version number increments</li>
+                        <li>Major: Breaking changes to interface or behavior</li>
+                        <li>Minor: New functionality in backward-compatible manner</li>
+                        <li>Patch: Backward-compatible bug fixes</li>
+                        <li>Document version change rationale</li>
+                    </ul>
+                </li>
+
+                <li><strong>Client-Specific Version Handling:</strong>
+                    <ul>
+                        <li>Implement version negotiation in client-server interactions</li>
+                        <li>Track client version capabilities</li>
+                        <li>Provide fallback mechanisms for version incompatibilities</li>
+                        <li>Consider client-side migration helpers</li>
+                    </ul>
+                    <p>Example client-side version handling:</p>
+                    <pre>
+class MCPClient:
+    def __init__(self, server_url, preferred_version=None):
+        self.server_url = server_url
+        self.preferred_version = preferred_version
+        self.supported_versions = ["3.2", "3.1", "3.0", "2.5"]
+
+    async def connect(self):
+        """Connect to the server and negotiate version"""
+        # Get available versions from server
+        versions_response = await self.get("/versions")
+        server_versions = versions_response.get("stable", [])
+
+        # Find best matching version
+        if self.preferred_version and self.preferred_version in server_versions:
+            self.negotiated_version = self.preferred_version
+        else:
+            # Find highest compatible version
+            for version in self.supported_versions:
+                if version in server_versions:
+                    self.negotiated_version = version
+                    break
+            else:
+                raise VersionError("No compatible version found")
+
+        print(f"Using API version: {self.negotiated_version}")
+        return self.negotiated_version
+
+    async def request(self, method, path, **kwargs):
+        """Make a request with version header"""
+        headers = kwargs.get("headers", {})
+        headers["Accept-Version"] = self.negotiated_version
+        kwargs["headers"] = headers
+
+        response = await self.http_client.request(method, f"{self.server_url}{path}", **kwargs)
+        return response</pre>
+                </li>
+
+                <li><strong>Versioning Governance:</strong>
+                    <ul>
+                        <li>Establish clear policies for version lifecycle management</li>
+                        <li>Define deprecation and end-of-life processes</li>
+                        <li>Document support timelines for different versions</li>
+                        <li>Implement version review and approval processes</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <p>By implementing a comprehensive versioning strategy for MCP resources and tools, you enable smooth
+                evolution of your implementation while providing stability and predictability for clients. This approach
+                balances the need for innovation with the requirements of production systems that depend on consistent
+                behavior.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Status: Draft<br>
+            Version: 1.0.0<br>
+            Date: 2024-04-18<br>
+            License: <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+        <p>Created for MCP Ontology Implementation Guide</p>
+    </footer>
+
+</body>
+
+</html>

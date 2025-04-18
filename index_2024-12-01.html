@@ -8,11 +8,12 @@
         content="Formal vocabulary for describing interactions between AI language models and external context providers. Defines core concepts for resources, tools, prompts and messaging.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Model Context Protocol Ontology">
     <meta property="og:description" content="RDF vocabulary for AI language model context interactions">
     <meta property="og:type" content="website">
 
-
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Model Context Protocol Ontology">
     <meta name="twitter:description" content="RDF vocabulary for AI language model context interactions">
@@ -41,26 +42,7 @@
         dd {
             margin-bottom: 1em;
         }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            margin: 20px 0;
-            display: block;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-        }
-
-        .diagram-caption {
-            text-align: center;
-            font-style: italic;
-            margin-top: -15px;
-            margin-bottom: 25px;
-            color: #555;
-        }
     </style>
-
 </head>
 
 <body>
@@ -86,7 +68,6 @@
             <li><a href="#classes">Classes</a></li>
             <li><a href="#properties">Properties</a></li>
             <li><a href="#rag-integration">RAG Integration Patterns</a></li>
-            <li><a href="#a2a-integration">A2A Integration</a></li>
         </ul>
     </nav>
 
@@ -133,30 +114,10 @@
                 <dt>Prompts</dt>
                 <dd>Templates that structure interactions with language models</dd>
             </dl>
-
-            <img src="images/mcp-interaction-flow.png" alt="MCP Interaction Flow Diagram" />
-            <p class="diagram-caption">Interaction flow between MCP components</p>
-
-            <h3>Resource Lifecycle</h3>
-            <p>Resources in the Model Context Protocol follow a distinct lifecycle from registration to eventual
-                deprecation:</p>
-
-            <img src="images/mcp-lifecycle.png" alt="MCP Resource Lifecycle" />
-            <p class="diagram-caption">The lifecycle of resources in the MCP ecosystem</p>
-
-            <h3>Tool Execution</h3>
-            <p>When a language model needs to perform actions, it can utilize tools through a structured execution flow:
-            </p>
-
-            <img src="images/mcp-tool-execution.png" alt="MCP Tool Execution Flow" />
-            <p class="diagram-caption">Sequence diagram showing tool execution in MCP</p>
         </section>
 
         <section id="classes">
             <h2>Classes</h2>
-            <img src="images/mcp-core-classes.png" alt="MCP Core Classes Diagram" />
-            <p class="diagram-caption">Core classes defined in the MCP ontology</p>
-
             <dl>
                 <dt>mcp:Server</dt>
                 <dd>An MCP server implementation</dd>
@@ -191,12 +152,6 @@
                 <dt>mcp:Capability</dt>
                 <dd>A supported capability</dd>
             </dl>
-
-            <h3>Resource Types</h3>
-            <p>The MCP ontology can be extended to support various resource types:</p>
-
-            <img src="images/mcp-resource-hierarchy.png" alt="MCP Resource Types Hierarchy" />
-            <p class="diagram-caption">Hierarchy of resource types in MCP</p>
         </section>
 
         <section id="properties">
@@ -227,33 +182,28 @@
             <p>The MCP ontology supports Retrieval-Augmented Generation (RAG) through structured access to context
                 resources. Here are key integration patterns:</p>
 
-            <img src="images/mcp-rag-integration.png" alt="MCP-RAG Integration Pattern" />
-            <p class="diagram-caption">Integration flow between MCP and RAG components</p>
-
             <div class="example">
                 <h3>Resource Discovery</h3>
                 <pre>
-
 PREFIX mcp: &lt;http://purl.org/stuff/mcp/&gt;
 
 SELECT ?resource ?name ?type WHERE {
-?server a mcp:Server ;
-mcp:providesResource ?resource .
-?resource mcp:name ?name ;
-mcp:mimeType ?type .
+  ?server a mcp:Server ;
+          mcp:providesResource ?resource .
+  ?resource mcp:name ?name ;
+           mcp:mimeType ?type .
 }</pre>
             </div>
 
             <div class="example">
                 <h3>Tool Discovery</h3>
                 <pre>
-
 PREFIX mcp: &lt;http://purl.org/stuff/mcp/&gt;
 
 SELECT ?tool ?desc WHERE {
-?server mcp:providesTool ?tool .
-?tool mcp:description ?desc .
-FILTER(CONTAINS(LCASE(?desc), "text analysis"))
+  ?server mcp:providesTool ?tool .
+  ?tool mcp:description ?desc .
+  FILTER(CONTAINS(LCASE(?desc), "text analysis"))
 }</pre>
             </div>
 
@@ -261,7 +211,6 @@ FILTER(CONTAINS(LCASE(?desc), "text analysis"))
                 <h3>Hybrid Search Implementation</h3>
                 <p>Combining vector similarity with graph traversal:</p>
                 <pre>
-
 from rdflib import Graph, Namespace
 from sentence_transformers import SentenceTransformer
 
@@ -271,20 +220,18 @@ g.parse("mcp-store.ttl")
 encoder = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Index resources
-
 resources = []
 for s,p,o in g.triples((None, MCP.text, None)):
-resources.append({
-'id': str(s),
-'text': str(o),
-'embedding': encoder.encode(str(o))
-})
+    resources.append({
+        'id': str(s),
+        'text': str(o),
+        'embedding': encoder.encode(str(o))
+    })
 
 # Query with RAG
-
 def query_with_context(question):
-q_embedding = encoder.encode(question)
-relevant = find_similar(q_embedding, resources)
+    q_embedding = encoder.encode(question)
+    relevant = find_similar(q_embedding, resources)
 
     context = []
     for r in relevant:
@@ -313,27 +260,6 @@ relevant = find_similar(q_embedding, resources)
                     <li>Track resource versions in the graph</li>
                 </ul>
             </div>
-        </section>
-
-        <section id="a2a-integration">
-            <h2>A2A Integration</h2>
-            <p>The Model Context Protocol (MCP) and Agent-to-Agent Protocol (A2A) serve complementary purposes in the
-                agentic ecosystem, with MCP focusing on tool and resource access, while A2A enables agent-to-agent
-                communication. The diagram below illustrates how these protocols can work together:</p>
-
-            <img src="images/mcp-a2a-comparison.png" alt="MCP and A2A Protocol Comparison" />
-            <p class="diagram-caption">Comparison and integration points between MCP and A2A</p>
-
-            <p>Key integration considerations:</p>
-            <ul>
-                <li>MCP Resources can be mapped to A2A Artifacts for sharing between agents</li>
-                <li>MCP Tools can be exposed as A2A Skills, enabling agent capability discovery</li>
-                <li>A2A Messages can encapsulate MCP Prompts for structured agent interactions</li>
-                <li>MCP Servers can be represented by A2A Agent Cards, facilitating discovery</li>
-            </ul>
-
-            <p>This integration creates a comprehensive ecosystem where agents can both access tools and resources (via
-                MCP) and coordinate with other agents (via A2A) to accomplish complex tasks.</p>
         </section>
 
         <footer>
