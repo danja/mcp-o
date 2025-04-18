@@ -1,0 +1,59 @@
+graph TD
+    subgraph MCP["Model Context Protocol"]
+        MCPServer["MCP Server"]
+        Resources["Resources"]
+        Tools["Tools"]
+        Prompts["Prompts"]
+    end
+
+    subgraph A2A["Agent-to-Agent Protocol"]
+        Task["Task"]
+        Message["Message"]
+        Artifact["Artifact"]
+        Skill["Skill"]
+    end
+
+    subgraph Integration["Integration Layer"]
+        ResourceMapping["Resource Mapping"]
+        ToolSkillMapping["Tool-Skill Mapping"]
+        MessageTranslation["Message Translation"]
+        ArtifactCreation["Artifact Creation"]
+    end
+
+    LLM["Language Model"] --- MCPServer
+    MCPServer --- Resources
+    MCPServer --- Tools
+    MCPServer --- Prompts
+
+    Agent1["Agent 1"] --- Task
+    Task --- Message
+    Task --- Artifact
+    Agent1 --- Skill
+
+    Resources --- ResourceMapping
+    Tools --- ToolSkillMapping
+    Prompts --- MessageTranslation
+
+    ResourceMapping --- Artifact
+    ToolSkillMapping --- Skill
+    MessageTranslation --- Message
+
+    classDef mcp fill:#bbf,stroke:#333,stroke-width:2px
+    classDef a2a fill:#fbb,stroke:#333,stroke-width:2px
+    classDef integration fill:#bfb,stroke:#333,stroke-width:2px
+    classDef external fill:#ddd,stroke:#333,stroke-width:2px
+
+    class MCPServer,Resources,Tools,Prompts mcp
+    class Task,Message,Artifact,Skill a2a
+    class ResourceMapping,ToolSkillMapping,MessageTranslation,ArtifactCreation integration
+    class LLM,Agent1 external
+
+    %% Relationship labels
+    MCPServer -.-> |"provides"| Resources
+    MCPServer -.-> |"provides"| Tools
+    MCPServer -.-> |"provides"| Prompts
+
+    Agent1 -.-> |"creates"| Task
+    Task -.-> |"contains"| Message
+    Task -.-> |"produces"| Artifact
+    Agent1 -.-> |"has"| Skill

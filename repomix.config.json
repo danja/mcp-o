@@ -1,0 +1,11 @@
+{
+    "output": {
+        "filePath": "./mcp-o_repomix.md",
+        "headerText": "MCP Namespace Documents",
+        "removeComments": true
+    },
+    "ignore": {
+        "useDefaultPatterns": true,
+        "customPatterns": []
+    }
+}

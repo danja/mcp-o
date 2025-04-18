@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Resource
+    participant Tool
+
+    Client->>Server: Request available resources
+    Server-->>Client: Return resource catalog
+    Client->>Server: Request specific resource
+    Server->>Resource: Retrieve resource content
+    Resource-->>Server: Return content
+    Server-->>Client: Deliver resource content
+
+    Client->>Server: Request available tools
+    Server-->>Client: Return tool catalog
+    Client->>Server: Call tool with parameters
+    Server->>Tool: Execute tool function
+    Tool-->>Server: Return execution results
+    Server-->>Client: Deliver tool execution results
+
+    Client->>Server: Request available prompts
+    Server-->>Client: Return prompt catalog
+    Client->>Server: Request prompt with variables
+    Server-->>Client: Return formatted prompt

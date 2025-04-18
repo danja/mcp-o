@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant LLM as Language Model
+    participant Server as MCP Server
+    participant Tool as Tool Service
+    participant Resource as Resource Service
+
+    LLM->>+Server: Request tool execution
+    Server->>Server: Validate request parameters
+    Server->>+Tool: Call tool function
+
+    alt Tool needs resource access
+        Tool->>+Resource: Request specific resource
+        Resource-->>-Tool: Return resource content
+    end
+
+    Tool->>Tool: Process inputs
+    Tool-->>-Server: Return execution results
+
+    Server->>Server: Format results
+    Server-->>-LLM: Deliver tool response
+
+    LLM->>LLM: Incorporate results into reasoning

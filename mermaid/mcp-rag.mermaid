@@ -1,0 +1,52 @@
+flowchart TD
+    subgraph MCP["MCP Environment"]
+        Server("MCP Server")
+        Resources("Resource Repository")
+        Tools("Tool Registry")
+        Prompts("Prompt Templates")
+    end
+
+    subgraph RAG["RAG System"]
+        VectorDB("Vector Database")
+        Embeddings("Embedding Service")
+        Retriever("Retrieval Engine")
+        Reranker("Reranker")
+    end
+
+    subgraph LLM["LLM Service"]
+        Model("Language Model")
+        Context("Context Window")
+        Generator("Response Generator")
+    end
+
+    Client("Client Application")
+
+    Client -->|1. Sends query| Server
+    Server -->|2. Identifies resources| Resources
+    Resources -->|3. Resource metadata| Server
+    Server -->|4. Embeds query| RAG
+
+    RAG -->|5. Vector search| VectorDB
+    VectorDB -->|6. Similar vectors| RAG
+    RAG -->|7. Retrieves content| Resources
+    Resources -->|8. Resource content| RAG
+    RAG -->|9. Reranks results| Reranker
+
+    RAG -->|10. Relevant context| Server
+    Server -->|11. Formats context| Server
+    Server -->|12. Prepares tools| Tools
+    Tools -->|13. Tool definitions| Server
+    Server -->|14. Selects prompt| Prompts
+    Prompts -->|15. Prompt template| Server
+
+    Server -->|16. Complete context| LLM
+    LLM -->|17. Generated response| Server
+    Server -->|18. Final response| Client
+
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style Server fill:#bbf,stroke:#333,stroke-width:2px
+    style Resources fill:#bfb,stroke:#333,stroke-width:2px
+    style Tools fill:#bfb,stroke:#333,stroke-width:2px
+    style Prompts fill:#bfb,stroke:#333,stroke-width:2px
+    style VectorDB fill:#fbb,stroke:#333,stroke-width:2px
+    style Model fill:#fbf,stroke:#333,stroke-width:2px

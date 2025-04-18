@@ -1,0 +1,59 @@
+classDiagram
+    class Server {
+        hasCapability: Capability
+        providesResource: Resource
+        providesTool: Tool
+        providesPrompt: Prompt
+    }
+
+    class Client {
+        hasCapability: Capability
+    }
+
+    class Resource {
+        uri: String
+        name: String
+        mimeType: String
+        description: String
+    }
+
+    class Tool {
+        name: String
+        description: String
+    }
+
+    class Prompt {
+        name: String
+        description: String
+    }
+
+    class Message {
+        hasContent: Content
+        hasRole: Role
+    }
+
+    class Content
+
+    class TextContent {
+        text: String
+    }
+
+    class ImageContent {
+        imageData: Base64Binary
+        mimeType: String
+    }
+
+    class Role
+
+    class Capability
+
+    Server --> Capability : hasCapability
+    Client --> Capability : hasCapability
+    Server --> Resource : providesResource
+    Server --> Tool : providesTool
+    Server --> Prompt : providesPrompt
+    Message --> Content : hasContent
+    Message --> Role : hasRole
+
+    Content <|-- TextContent
+    Content <|-- ImageContent

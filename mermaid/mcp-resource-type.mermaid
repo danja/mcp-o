@@ -1,0 +1,79 @@
+classDiagram
+    class Resource {
+        uri: String
+        name: String
+        mimeType: String
+        description: String
+    }
+
+    class TextResource {
+        text: String
+        language: String
+    }
+
+    class StructuredResource {
+        schema: String
+        format: String
+    }
+
+    class MediaResource {
+        mediaType: String
+        encoding: String
+    }
+
+    class DocumentResource {
+        documentType: String
+        pageCount: Integer
+    }
+
+    class DatabaseResource {
+        dbType: String
+        tables: List
+    }
+
+    class APIResource {
+        endpoint: String
+        authType: String
+    }
+
+    Resource <|-- TextResource
+    Resource <|-- StructuredResource
+    Resource <|-- MediaResource
+    Resource <|-- DocumentResource
+    Resource <|-- DatabaseResource
+    Resource <|-- APIResource
+
+    StructuredResource <|-- JSONResource
+    StructuredResource <|-- XMLResource
+    StructuredResource <|-- RDFResource
+
+    MediaResource <|-- ImageResource
+    MediaResource <|-- AudioResource
+    MediaResource <|-- VideoResource
+
+    class JSONResource {
+        jsonSchema: String
+    }
+
+    class XMLResource {
+        xmlSchema: String
+    }
+
+    class RDFResource {
+        ontology: String
+    }
+
+    class ImageResource {
+        width: Integer
+        height: Integer
+    }
+
+    class AudioResource {
+        duration: Integer
+        sampleRate: Integer
+    }
+
+    class VideoResource {
+        duration: Integer
+        resolution: String
+    }

@@ -1,0 +1,14 @@
+stateDiagram-v2
+    [*] --> Registered: Resource registered with server
+    Registered --> Available: Resource indexed and ready
+    Available --> Selected: Client selects resource
+    Selected --> Retrieved: Resource content retrieved
+    Retrieved --> Processed: Content processed by LLM
+    Processed --> Referenced: Resource referenced in output
+    Referenced --> Available: Resource returned to available pool
+
+    Available --> Updated: Resource content changes
+    Updated --> Available: Reindexed with new content
+
+    Available --> Deprecated: Resource marked as outdated
+    Deprecated --> [*]: Resource removed from server

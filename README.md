@@ -25,3 +25,5 @@ RDF/OWL representation of the [Model Context Protocol](https://modelcontextproto
 ## License
 
 [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
+
+_repomix -c repomix.config.json . _
