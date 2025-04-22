@@ -1,0 +1,12 @@
+
+
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX : <http://purl.org/stuff/transmissions/>
+
+# https://schema.org/BlogPosting
+# https://schema.org/Article
+
+INSERT DATA {
+  <{{uri}}> :htmlContent """{{content | safe}}"""
+}
